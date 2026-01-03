@@ -48,7 +48,7 @@ Rules:
             },
             { role: "user", content: text }
           ],
-          max_tokens: 4000
+          max_tokens: 1100
         })
       }
     );
@@ -66,3 +66,4 @@ Rules:
     };
   }
 }
+
