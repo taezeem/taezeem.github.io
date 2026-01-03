@@ -15,29 +15,23 @@
 
 /* ===== THEME ===== */
 :root{
-  --bg:#f4f4f5;--panel:#fff;--chat:#f9fafb;
-  --border:#e5e7eb;--user:#2563eb;--bot:#e5e7eb;
-  --text:#111827;--muted:#6b7280;
+  --bg:#f4f4f5; --panel:#fff; --chat:#f9fafb;
+  --border:#e5e7eb; --user:#2563eb; --bot:#e5e7eb;
+  --text:#111827; --muted:#6b7280;
+  --link:#2563eb;
 }
-  
-body.dark {
-  --bg: #020617;      /* Page background - true dark */
-  --panel: #0f172a;   /* Chat box background - slightly lighter so it pops */
-  --chat: #1e293b;    /* Chat message area background - slightly different from panel */
-  --border: #1f2937;
-  --user: #2563eb;
-  --bot: #0f172a;     /* Bot message background inside chat panel */
-  --text: #e5e7eb;
-  --muted: #94a3b8;
-  
-  body.dark a:hover {
-  color: #4ade80; /* lighter green on hover */
+body.dark{
+  --bg:#020617;      /* Page background */
+  --panel:#0f172a;   /* Chat box background */
+  --chat:#1e293b;    /* Chat message area background */
+  --border:#1f2937;
+  --user:#2563eb;
+  --bot:#0f172a;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --link:#22c55e;    /* GREEN links in dark mode */
 }
 
-  body.dark a {
-  color: #22c55e; /* bright green */
-  text-decoration: underline;
-  }
 body{
   font-family:system-ui,sans-serif;
   background:var(--bg);
@@ -79,10 +73,19 @@ select,button.toggle{
   border-radius:12px;line-height:1.5;
   opacity:0;animation:fadeIn .25s forwards;
   position:relative;
+  word-wrap:break-word;
 }
 
 .user{align-self:flex-end;background:var(--user);color:#fff}
 .bot{align-self:flex-start;background:var(--bot);color:var(--text)}
+
+.msg a{
+  color: var(--link);
+  text-decoration: underline;
+}
+.msg a:hover{
+  color: #4ade80;
+}
 
 .timestamp{
   font-size:10px;color:var(--muted);margin-top:6px;
@@ -103,18 +106,16 @@ pre code{font-size:13px}
 .copy-btn{
   position:absolute;
   top:6px;right:6px;
-  background:#2563eb;
-  border:none;color:#fff;
-  font-size:11px;
-  padding:4px 8px;
-  border-radius:6px;
-  cursor:pointer;
+  background:#2563eb;border:none;color:#fff;
+  font-size:11px;padding:4px 8px;
+  border-radius:6px;cursor:pointer;
 }
 
 /* ===== FOOTER ===== */
 footer{
   display:flex;gap:8px;padding:12px;
   border-top:1px solid var(--border);
+  background:var(--panel);
 }
 
 input{
@@ -140,7 +141,7 @@ button.send{
 }
 
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeIn{to{opacity:1}}
+@keyframes fadeIn{to{opacity:1;}}
 </style>
 </head>
 
@@ -281,5 +282,3 @@ input.addEventListener("keydown",e=>{
 
 </body>
 </html>
-
-
