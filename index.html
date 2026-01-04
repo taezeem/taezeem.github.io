@@ -200,7 +200,6 @@ body.dark #chat::-webkit-scrollbar-thumb {
     <div class="controls">
       <select id="mode">
         <option value="chat">Chat</option>
-        <option value="image">Image</option>
       </select>
       <button class="toggle" onclick="clearChat()">🗑️</button>
       <button class="toggle" onclick="toggleTheme()">🌗</button>
@@ -315,6 +314,7 @@ async function send() {
   render("user", prompt);
 
   const loading = render("bot", "<div class='spinner'></div>", false);
+  let loadingRemoved = false;
 
   try {
     let fullAnswer = "";
@@ -324,28 +324,32 @@ async function send() {
       const res = await fetch("/.netlify/functions/hackoAI", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: prompt, mode: mode.value })
+        body: JSON.stringify({ text: prompt })
       });
 
       const data = await res.json();
-      loading.remove();
 
-      let chunk = "";
-      if (mode.value === "image") {
-        chunk = `![image](${data.data[0].url})`;
-        fullAnswer += chunk;
-        continueLoop = false; // image done
+      if (!loadingRemoved) {
+        loading.remove();
+        loadingRemoved = true;
+      }
+
+      // ✅ SAFE ACCESS — THIS WILL NOT CRASH
+      const chunk = data?.choices?.[0]?.message?.content || "";
+
+      fullAnswer += chunk;
+
+      // 🔍 continuation detection
+      const trimmed = chunk.trim();
+      const lastChar = trimmed.slice(-1);
+
+      if (
+        trimmed.length < 80 ||
+        [".", "!", "?", "`"].includes(lastChar)
+      ) {
+        continueLoop = false;
       } else {
-        chunk = data.choices[0].message.content;
-        fullAnswer += chunk;
-
-        // simple heuristic: if last line seems cut off, continue
-        const lastChar = chunk.trim().slice(-1);
-        if ([".", "!", "?", "`"].includes(lastChar) || chunk.trim().length < 100) {
-          continueLoop = false; // assume complete
-        } else {
-          prompt = "Continue from last message:\n" + chunk;
-        }
+        prompt = "Continue from where you stopped:\n" + chunk;
       }
     }
 
@@ -353,8 +357,8 @@ async function send() {
 
   } catch (err) {
     loading.remove();
-    render("bot", "**Network error. Server folded 💀**");
     console.error(err);
+    render("bot", "**Network error. Server folded 💀**");
   }
 }
 
@@ -366,14 +370,5 @@ input.addEventListener("keydown",e=>{
   if(e.key==="Enter") send();
 });
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
