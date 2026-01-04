@@ -306,44 +306,38 @@ function streamBot(text){
 }
 
 /* ===== SEND ===== */
-<script>
 async function send() {
-  const text = input.value.trim();
-  if (!text) return;
-
+  let prompt = input.value.trim();
+  if (!prompt) return;
   input.value = "";
-  render("user", text);
 
-  const loading = render(
-    "bot",
-    "<div class='spinner'></div>",
-    false
-  );
+  render("user", prompt);
+
+  const loading = render("bot", "<div class='spinner'></div>", false);
 
   try {
     const res = await fetch("/.netlify/functions/hackoAI", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        text,
-        mode: mode.value
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: prompt })
     });
 
     const data = await res.json();
+
     loading.remove();
 
-    if (mode.value === "image") {
-      // fixed: wrapped markdown in a template string
-      render("bot", `![image](${data.data[0].url})`);
-    } else {
-      streamBot(data.choices[0].message.content);
+    const answer = data?.choices?.[0]?.message?.content;
+
+    if (!answer) {
+      render("bot", "💀 Empty response. Free-tier moment.");
+      return;
     }
+
+    streamBot(answer);
 
   } catch (err) {
     loading.remove();
+    console.error(err);
     render("bot", "**Network error. Server folded 💀**");
   }
 }
@@ -359,3 +353,4 @@ input.addEventListener("keydown", (e) => {
 
 </body>
 </html>
+
