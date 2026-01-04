@@ -307,34 +307,54 @@ function streamBot(text){
 }
 
 /* ===== SEND ===== */
-async function send(){
-  const text=input.value.trim();
-  if(!text) return;
-  input.value="";
+async function send() {
+  let prompt = input.value.trim();
+  if (!prompt) return;
+  input.value = "";
 
-  render("user",text);
+  render("user", prompt);
 
-  const loading=render("bot","<div class='spinner'></div>",false);
+  const loading = render("bot", "<div class='spinner'></div>", false);
 
-  try{
-    const res=await fetch("/.netlify/functions/hackoAI",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({text,mode:mode.value})
-    });
+  try {
+    let fullAnswer = "";
+    let continueLoop = true;
 
-    const data=await res.json();
-    loading.remove();
+    while (continueLoop) {
+      const res = await fetch("/.netlify/functions/hackoAI", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: prompt, mode: mode.value })
+      });
 
-    if(mode.value==="image"){
-      render("bot",`![image](${data.data[0].url})`);
-    }else{
-      streamBot(data.choices[0].message.content);
+      const data = await res.json();
+      loading.remove();
+
+      let chunk = "";
+      if (mode.value === "image") {
+        chunk = `![image](${data.data[0].url})`;
+        fullAnswer += chunk;
+        continueLoop = false; // image done
+      } else {
+        chunk = data.choices[0].message.content;
+        fullAnswer += chunk;
+
+        // simple heuristic: if last line seems cut off, continue
+        const lastChar = chunk.trim().slice(-1);
+        if ([".", "!", "?", "`"].includes(lastChar) || chunk.trim().length < 100) {
+          continueLoop = false; // assume complete
+        } else {
+          prompt = "Continue from last message:\n" + chunk;
+        }
+      }
     }
 
-  }catch{
+    streamBot(fullAnswer);
+
+  } catch (err) {
     loading.remove();
-    render("bot","**Network error. Server folded 💀**");
+    render("bot", "**Network error. Server folded 💀**");
+    console.error(err);
   }
 }
 
@@ -349,6 +369,7 @@ input.addEventListener("keydown",e=>{
 
 </body>
 </html>
+
 
 
 
