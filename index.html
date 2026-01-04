@@ -306,70 +306,56 @@ function streamBot(text){
 }
 
 /* ===== SEND ===== */
+<script>
 async function send() {
-  let prompt = input.value.trim();
-  if (!prompt) return;
+  const text = input.value.trim();
+  if (!text) return;
+
   input.value = "";
+  render("user", text);
 
-  render("user", prompt);
-
-  const loading = render("bot", "<div class='spinner'></div>", false);
-  let loadingRemoved = false;
+  const loading = render(
+    "bot",
+    "<div class='spinner'></div>",
+    false
+  );
 
   try {
-    let fullAnswer = "";
-    let continueLoop = true;
+    const res = await fetch("/.netlify/functions/hackoAI", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text,
+        mode: mode.value
+      })
+    });
 
-    while (continueLoop) {
-      const res = await fetch("/.netlify/functions/hackoAI", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: prompt })
-      });
+    const data = await res.json();
+    loading.remove();
 
-      const data = await res.json();
-
-      if (!loadingRemoved) {
-        loading.remove();
-        loadingRemoved = true;
-      }
-
-      // ✅ SAFE ACCESS — THIS WILL NOT CRASH
-      const chunk = data?.choices?.[0]?.message?.content || "";
-
-      fullAnswer += chunk;
-
-      // 🔍 continuation detection
-      const trimmed = chunk.trim();
-      const lastChar = trimmed.slice(-1);
-
-      if (
-        trimmed.length < 80 ||
-        [".", "!", "?", "`"].includes(lastChar)
-      ) {
-        continueLoop = false;
-      } else {
-        prompt = "Continue from where you stopped:\n" + chunk;
-      }
+    if (mode.value === "image") {
+      // fixed: wrapped markdown in a template string
+      render("bot", `![image](${data.data[0].url})`);
+    } else {
+      streamBot(data.choices[0].message.content);
     }
-
-    streamBot(fullAnswer);
 
   } catch (err) {
     loading.remove();
-    console.error(err);
     render("bot", "**Network error. Server folded 💀**");
   }
 }
 
-function toggleTheme(){
+function toggleTheme() {
   document.body.classList.toggle("dark");
 }
 
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter") send();
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") send();
 });
 </script>
+
 </body>
 </html>
-
