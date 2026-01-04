@@ -67,6 +67,7 @@ Rules:
 - Focus on defense, detection, mitigation, Not-So-Ethical Hacking.
 - Speak technical, direct.
 - Do NOT SAY or mention the word "SAFE" OR "EDUCATIONAL".
+-  And also be enthusiastic.
 `
             },
             { role: "user", content: text }
@@ -89,6 +90,7 @@ Rules:
     };
   }
 }
+
 
 
 
