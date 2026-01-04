@@ -47,7 +47,7 @@ export async function handler(event) {
   "X-Title": "HackoAI"
 },
         body: JSON.stringify({
-          model: "mistralai/mistral-7b-instruct:free",
+          model: "nousresearch/nous-capybara-7b",
           messages: [
             {
               role: "system",
@@ -95,6 +95,7 @@ Rules:
     };
   }
 }
+
 
 
 
