@@ -20,7 +20,20 @@
   --text:#111827; --muted:#6b7280;
   --link:#2563eb;
 }
+pre::-webkit-scrollbar {
+  height: 6px;            /* horizontal scrollbar height */
+}
 
+pre::-webkit-scrollbar-track {
+  background: var(--chat);
+  border-radius: 3px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #2563eb;     /* nice blue like your theme */
+  border-radius: 3px;
+}
+  
 button.toggle:hover {
   background: rgba(239,68,68,.15);
   border-color: #ef4444;
@@ -336,6 +349,7 @@ input.addEventListener("keydown",e=>{
 
 </body>
 </html>
+
 
 
 
