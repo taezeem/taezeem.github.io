@@ -953,9 +953,9 @@ async function send() {
     const data = await res.json();
     loading.remove();
 
-    const answer = data?.data?.[0]?.text || "💀 Empty response from DeepSeek";
+    const answer = data.choices?.[0]?.message?.content || "💀 Empty response from DeepSeek";
+await streamBotInChunks(answer);
 
-    await streamBotInChunks(answer);
 
   } catch (err) {
     loading.remove();
@@ -981,4 +981,5 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
