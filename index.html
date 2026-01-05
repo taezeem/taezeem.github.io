@@ -934,7 +934,7 @@ function streamBot(text){
   },15);
 }
   // GLOBAL: typewriter bot streamer
-async function streamBotInChunks(fullText, chunkSize = 50) { // smaller chunks = smoother saving
+async function streamBotInChunks(fullText, chunkSize = 50) {
   const d = document.createElement("div");
   d.className = "msg bot";
   chat.appendChild(d);
@@ -942,18 +942,17 @@ async function streamBotInChunks(fullText, chunkSize = 50) { // smaller chunks =
   let renderedText = "";
   const session = getCurrentSession();
 
-  // Create a new bot message in localStorage immediately
+  // create bot message immediately
   saveMessage("bot", "");
   const botIndex = session.messages.length - 1;
 
   for (let i = 0; i < fullText.length; i += chunkSize) {
     const chunk = fullText.slice(i, i + chunkSize);
     renderedText += chunk;
-
     d.innerHTML = marked.parse(preprocess(renderedText));
     chat.scrollTop = chat.scrollHeight;
 
-    // Live update in localStorage
+    // live update
     session.messages[botIndex].content = renderedText;
     localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
 
@@ -1010,6 +1009,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
