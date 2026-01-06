@@ -1044,7 +1044,7 @@ async function send() {
   try {
     if (isImage) {
       // Image generation
-      puter.ai.txt2img(prompt, { model: "gemini-3-pro-image-preview" })
+      puter.ai.txt2img(prompt, { model: "gemini-2.5-flash-image-preview" })
         .then(img => {
           loading.remove();
           const div = document.createElement("div");
@@ -1113,6 +1113,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
