@@ -1016,8 +1016,34 @@ async function send() {
   input.value = "";
   charCounter.textContent = "0 chars";
 
-  render("user", prompt);
+  // IMAGE MODE
+  if (prompt.startsWith("/image ")) {
+    const imagePrompt = prompt.slice(7).trim();
+    render("user", prompt);
+    const loading = render("bot", "<div class='spinner'></div>", false);
 
+    try {
+      const res = await fetch("https://t2i.mcpcore.xyz/api/free/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: imagePrompt, model: "turbo" })
+      });
+
+      const data = await res.json();
+      loading.remove();
+
+      if (data.imageUrl) render("bot", `![AI Image](${data.imageUrl})`);
+      else render("bot", "**Failed to generate image 💀**");
+    } catch (err) {
+      loading.remove();
+      console.error(err);
+      render("bot", "**Network error. SubNP API unreachable 💀**");
+    }
+    return;
+  }
+
+  // NORMAL TEXT MODE
+  render("user", prompt);
   const loading = render("bot", "<div class='spinner'></div>", false);
 
   try {
@@ -1029,17 +1055,15 @@ async function send() {
 
     const data = await res.json();
     loading.remove();
-
     const answer = data.choices?.[0]?.message?.content || "💀 Empty response from DeepSeek";
-await streamBotInChunks(answer);
-
-
+    await streamBotInChunks(answer);
   } catch (err) {
     loading.remove();
     console.error(err);
     render("bot", "**Network error. Server folded 💀**");
   }
 }
+
 
 
 function toggleTheme() {
@@ -1058,4 +1082,5 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
