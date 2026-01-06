@@ -1023,55 +1023,76 @@ async function streamBotInChunks(fullText, chunkSize = 50) {
 async function send() {
   let prompt = input.value.trim();
   if (!prompt) return;
+
   input.value = "";
   charCounter.textContent = "0 chars";
 
-  // Decide if it's an image or normal chat
-  const isImage = prompt.startsWith("/img "); // use /img command to trigger image
-  if (isImage) prompt = prompt.slice(5); // remove /img from prompt
+  const isImage = prompt.startsWith("/img "); // image command
+  if (isImage) prompt = prompt.slice(5); // remove /img
 
+  // Render user message
   render("user", prompt);
 
+  // Render loading spinner
   const loading = render("bot", "<div class='spinner'></div>", false);
 
-  try {
-    if (isImage) {
-  puter.ai.txt2img(prompt, { model: "dall-e-3", quality: "hd" })
-    .then(img => {
+  if (isImage) {
+    // DALL-E image generation
+    puter.ai.txt2img(prompt, { model: "dall-e-3", quality: "hd" })
+      .then(img => {
+        loading.remove();
+
+        const div = document.createElement("div");
+        div.className = "msg bot";
+
+        const title = document.createElement("strong");
+        title.textContent = "DALL-E 3 Output";
+        div.appendChild(title);
+
+        img.classList.add("ai-img");
+        div.appendChild(img);
+
+        const t = document.createElement("div");
+        t.className = "timestamp";
+        t.textContent = time();
+        div.appendChild(t);
+
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+
+        saveMessage("bot", "[DALL-E 3 Image]");
+      })
+      .catch(err => {
+        loading.remove();
+        console.error(err);
+        render("bot", "**Error generating image 💀**");
+      });
+  } else {
+    // NORMAL DeepSeek chat (Netlify backend)
+    try {
+      const res = await fetch("/.netlify/functions/hackoAI", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ text: prompt })
+      });
+
+      const data = await res.json();
       loading.remove();
 
-      // Create a proper chat msg div for bot
-      const div = document.createElement("div");
-      div.className = "msg bot";
-
-      // Heading + image inside the bubble
-      const title = document.createElement("strong");
-      title.textContent = "DALL-E 3 Output";
-      div.appendChild(title);
-
-      // Add the img element with proper class
-      img.classList.add("ai-img");
-      div.appendChild(img);
-
-      // Timestamp
-      const t = document.createElement("div");
-      t.className = "timestamp";
-      t.textContent = time();
-      div.appendChild(t);
-
-      // Append to chat and scroll
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
-
-      // Save placeholder in session
-      saveMessage("bot", "[DALL-E 3 Image]");
-    })
-    .catch(err => {
+      // Stream bot response if you want typewriter
+      if (data.response) {
+        streamBotInChunks(data.response);
+      } else {
+        render("bot", "**No response from AI 💀**");
+      }
+    } catch (err) {
       loading.remove();
       console.error(err);
-      render("bot", "**Error generating image 💀**");
-    });
+      render("bot", "**Error connecting to DeepSeek 💀**");
+    }
+  }
 }
+
 
 
 function toggleTheme() {
@@ -1090,6 +1111,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
