@@ -11,7 +11,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
-<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&display=swap');
@@ -483,17 +483,6 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
-  
-  const script = document.createElement("script");
-script.src = "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js";
-script.onload = () => {
-  console.log("Highlight.js loaded!");
-  // initialize syntax highlighting if needed
-  document.querySelectorAll("pre code").forEach(block => hljs.highlightElement(block));
-};
-document.head.appendChild(script);
-
-
 const chat=document.getElementById("chat");
 const input=document.getElementById("input");
 const mode=document.getElementById("mode");
@@ -1026,6 +1015,10 @@ function editMessage(oldContent){
   input.focus();
 }
 
+  document.querySelectorAll("pre code").forEach(block=>{
+  hljs.highlightElement(block);
+});
+
 /* ===== TYPEWRITER ===== */
 function streamBot(text){
   const d=document.createElement("div");
@@ -1144,6 +1137,7 @@ function unlock(){
 </script>
 </body>
 </html>
+
 
 
 
