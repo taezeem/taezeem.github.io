@@ -9,7 +9,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- <script src="https://js.puter.com/v2/"></script> -->
+<script src="https://js.puter.com/v2/"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
 <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
@@ -910,34 +910,18 @@ function preprocess(text){
 }
 
 /* ===== RENDER ===== */
-function render(role, content, saveIt=true){
-  const d = document.createElement("div");
-  d.className = "msg " + role;
 
-  // if content is base64 OR an image URL, render as image
-  if(content.startsWith("data:image/") || content.startsWith("http") && /\.(png|jpg|jpeg|gif|webp)$/.test(content) || content.includes("image.pollinations.ai")){
-    const imgEl = document.createElement("img");
-    imgEl.src = content;
-    imgEl.className = "ai-img";
-    d.appendChild(imgEl);
-  } else {
-    d.innerHTML = marked.parse(preprocess(content));
-  }
-
-  // timestamp
-  const t = document.createElement("div");
-  t.className = "timestamp";
-  t.textContent = time();
-  d.appendChild(t);
-
-  chat.appendChild(d);
-  chat.scrollTop = chat.scrollHeight;
-
-  if(saveIt) saveMessage(role, content);
-  return d;
+function render(role,content,saveIt=true){
+  const d=document.createElement("div");
+  d.className="msg "+role;
+  if(content.startsWith("data:image/")) {
+  const imgEl = document.createElement("img");
+  imgEl.src = content;
+  imgEl.className = "ai-img";
+  d.appendChild(imgEl);
+} else {
+  d.innerHTML = marked.parse(preprocess(content));
 }
-
-
   
   // Add message actions for user messages
   if(role==="user"){
@@ -1059,15 +1043,40 @@ async function send() {
 
   try {
     if (isImage) {
-  const encodedPrompt = encodeURIComponent(prompt);
-  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=768&height=768&seed=${Date.now()}`;
+      // Image generation
+      puter.ai.txt2img(prompt, { model: "google/imagen-4.0-ultra", provider: "together-ai", disable_safety_checker: true })
+        .then(img => {
+          loading.remove();
+          const div = document.createElement("div");
+          div.className = "msg bot";
+          img.classList.add("ai-img");
 
-  // Save URL in session instead of base64
-  saveMessage("bot", imgUrl);
+// wait until image fully loads
+img.onload = () => {
+  const canvas = document.createElement("canvas");
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  const base64 = canvas.toDataURL();
+  saveMessage("bot", base64);
+};
 
-  // Render the image
-  render("bot", imgUrl, false);
-}
+div.appendChild(img);
+          const t = document.createElement("div");
+          t.className = "timestamp";
+          t.textContent = time();
+          div.appendChild(t);
+          chat.appendChild(div);
+          chat.scrollTop = chat.scrollHeight;
+          
+        })
+        .catch(err => {
+          loading.remove();
+          console.error(err);
+          render("bot", "**Error generating image 💀**");
+        });
+    }
  else {
       // TEXT GENERATION
       const res = await fetch("/.netlify/functions/hackoAI", {
