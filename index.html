@@ -435,7 +435,7 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <script>
 function clearPuter(){
 javascript:(async()=>{localStorage.clear();sessionStorage.clear();if('caches'in window){for(const k of await caches.keys())await caches.delete(k)}if(indexedDB.databases){(await indexedDB.databases()).forEach(db=>indexedDB.deleteDatabase(db.name))}alert("Puter.js wiped 💀")})();
-  }
+window.locate.reload();  }
   
   const script = document.createElement("script");
 script.src = "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js";
@@ -1117,6 +1117,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
