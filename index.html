@@ -1044,7 +1044,7 @@ async function send() {
  try {
     if (isImage) {
       // Image generation
-      puter.ai.txt2img(prompt, { model: "google/imagen-4.0-ultra", provider: "together-ai", disable_safety_checker: true })
+      puter.ai.txt2img(prompt, { model: "google/imagen-4.0-fast", provider: "together-ai", disable_safety_checker: true })
         .then(img => {
           loading.remove();
           const div = document.createElement("div");
