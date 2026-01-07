@@ -1043,30 +1043,14 @@ async function send() {
 
   try {
     if (isImage) {
-  const proxy = "https://corsproxy.io/?";
   const encodedPrompt = encodeURIComponent(prompt);
-  const imgUrl = `${proxy}https://image.pollinations.ai/prompt/${encodedPrompt}?width=768&height=768&seed=${Date.now()}`;
+  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=768&height=768&seed=${Date.now()}`;
 
-  const img = new Image();
-  img.crossOrigin = "Anonymous"; // required for CORS proxy
-  img.src = imgUrl;
-  img.className = "ai-img";
+  // Save URL in session instead of base64
+  saveMessage("bot", imgUrl);
 
-  await new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-  });
-
-  // convert to base64
-  const canvas = document.createElement("canvas");
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0);
-  const base64 = canvas.toDataURL("image/png");
-
-  saveMessage("bot", base64);
-  render("bot", base64, false);
+  // Render the image
+  render("bot", imgUrl, false);
 }
  else {
       // TEXT GENERATION
@@ -1109,6 +1093,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
