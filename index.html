@@ -910,17 +910,33 @@ function preprocess(text){
 }
 
 /* ===== RENDER ===== */
-function render(role,content,saveIt=true){
-  const d=document.createElement("div");
-  d.className="msg "+role;
-  if(content.startsWith("data:image/")) {
-  const imgEl = document.createElement("img");
-  imgEl.src = content;
-  imgEl.className = "ai-img";
-  d.appendChild(imgEl);
-} else {
-  d.innerHTML = marked.parse(preprocess(content));
+function render(role, content, saveIt=true){
+  const d = document.createElement("div");
+  d.className = "msg " + role;
+
+  // if content is base64 OR an image URL, render as image
+  if(content.startsWith("data:image/") || content.startsWith("http") && /\.(png|jpg|jpeg|gif|webp)$/.test(content) || content.includes("image.pollinations.ai")){
+    const imgEl = document.createElement("img");
+    imgEl.src = content;
+    imgEl.className = "ai-img";
+    d.appendChild(imgEl);
+  } else {
+    d.innerHTML = marked.parse(preprocess(content));
+  }
+
+  // timestamp
+  const t = document.createElement("div");
+  t.className = "timestamp";
+  t.textContent = time();
+  d.appendChild(t);
+
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+
+  if(saveIt) saveMessage(role, content);
+  return d;
 }
+
 
   
   // Add message actions for user messages
@@ -1093,6 +1109,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
