@@ -1045,7 +1045,7 @@ async function send() {
     if (isImage) {
       // Image generation
       puter.ai.txt2img(prompt, true,
-    { model: "google/imagen-4.0-ultra"})
+    { model: "google/imagen-4.0-fast"})
         .then(img => {
           loading.remove();
           const div = document.createElement("div");
@@ -1114,6 +1114,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
