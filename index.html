@@ -433,9 +433,27 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
-function clearPuter(){
-javascript:(async()=>{localStorage.clear();sessionStorage.clear();if('caches'in window){for(const k of await caches.keys())await caches.delete(k)}if(indexedDB.databases){(await indexedDB.databases()).forEach(db=>indexedDB.deleteDatabase(db.name))}alert("Puter.js wiped 💀")})();
-window.locate.reload();  }
+async function clearPuter() {
+  // wipe storage
+  sessionStorage.clear();
+
+  // wipe cache storage
+  if ("caches" in window) {
+    const keys = await caches.keys();
+    for (const k of keys) await caches.delete(k);
+  }
+
+  // wipe indexedDB
+  if (indexedDB.databases) {
+    const dbs = await indexedDB.databases();
+    for (const db of dbs) {
+      indexedDB.deleteDatabase(db.name);
+    }
+  }
+
+  alert("Puter.js wiped 💀");
+  location.reload();
+}
   
   const script = document.createElement("script");
 script.src = "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js";
@@ -1117,6 +1135,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
