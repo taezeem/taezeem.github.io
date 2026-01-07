@@ -1043,34 +1043,40 @@ async function send() {
 
  try {
     if (isImage) {
-      // Image generation
-      puter.ai.txt2img(prompt, { model: "google/imagen-4.0-ultra", provider: "together-ai", disable_safety_checker: true})
-        .then(img => {
-          loading.remove();
-          const div = document.createElement("div");
-          div.className = "msg bot";
-          img.classList.add("ai-img");
+  loading.remove();
 
-// wait until image fully loads
-img.onload = () => {
-  const canvas = document.createElement("canvas");
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0);
-  const base64 = canvas.toDataURL();
-  saveMessage("bot", base64);
-};
+  const encodedPrompt = encodeURIComponent(prompt);
+  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=768&height=768&seed=${Date.now()}`;
 
-div.appendChild(img);
-          const t = document.createElement("div");
-          t.className = "timestamp";
-          t.textContent = time();
-          div.appendChild(t);
-          chat.appendChild(div);
-          chat.scrollTop = chat.scrollHeight;
-          
-        })
+  const div = document.createElement("div");
+  div.className = "msg bot";
+
+  const img = document.createElement("img");
+  img.src = imgUrl;
+  img.className = "ai-img";
+
+  img.onload = async () => {
+    // convert to base64 so it SAVES in chat history
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const base64 = canvas.toDataURL("image/png");
+    saveMessage("bot", base64);
+  };
+
+  div.appendChild(img);
+
+  const t = document.createElement("div");
+  t.className = "timestamp";
+  t.textContent = time();
+  div.appendChild(t);
+
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
         .catch(err => {
           loading.remove();
           console.error(err);
@@ -1113,4 +1119,5 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
