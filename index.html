@@ -413,6 +413,7 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
         <button class="toggle" onclick="copyAll()">📋</button>
         <button class="toggle" onclick="clearChat()">🗑️</button>
         <button class="toggle" onclick="toggleTheme()">🌗</button>
+        <button class="toggle" onclick="clearPuter()">🏐</button>
       </div>
     </header>
 
@@ -432,6 +433,9 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
+function clearPuter(){
+javascript:(async()=>{localStorage.clear();sessionStorage.clear();if('caches'in window){for(const k of await caches.keys())await caches.delete(k)}if(indexedDB.databases){(await indexedDB.databases()).forEach(db=>indexedDB.deleteDatabase(db.name))}alert("Puter.js wiped 💀")})();
+  }
   
   const script = document.createElement("script");
 script.src = "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js";
@@ -1113,6 +1117,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
