@@ -1035,16 +1035,50 @@ async function send() {
   input.value = "";
   charCounter.textContent = "0 chars";
 
-  const isImage = prompt.startsWith("/img "); 
+  const isImage = prompt.startsWith("/img ");
+  const isVid = prompt.startsWith("/vid ");
   if (isImage) prompt = prompt.slice(5); 
+  if (isVid) prompt = prompt.slice(5); 
 
   render("user", prompt);
   const loading = render("bot", "<div class='spinner'></div>", false);
 
   try {
+    if (isVid) {
+  // Video Generation with Seedance
+  const encodedPrompt = encodeURIComponent(prompt);
+  
+  // Lite model, change to "ByteDance/Seedance-1.0-pro" for better quality
+  const model = "ByteDance/Seedance-1.0-pro"; 
+  
+  // optional: set width/height for aspect ratio
+  const options = { width: 768, height: 768 }; 
+
+  puter.ai.txt2vid(prompt, { model, ...options })
+    .then(video => {
+      loading.remove();        // remove spinner
+      video.className = "ai-video"; // optional styling
+      video.controls = true;        // show play/pause controls
+      render("bot", "");             // empty bot msg container
+      const botMsg = chat.lastChild; // get last bot div
+      botMsg.appendChild(video);     // attach video
+      video.play();
+      
+      // Save video URL in session (optional)
+      saveMessage("bot", video.src || "Video generated");
+    })
+    .catch(err => {
+      console.error(err);
+      loading.remove();
+      render("bot", "**Error generating video 💀**");
+    });
+
+  return; // exit so it doesn't run text generation
+}
+      
     if (isImage) {
       // Image generation
-      puter.ai.txt2img(prompt, { model: "google/imagen-4.0-ultra", provider: "together-ai", disable_safety_checker: true })
+      puter.ai.txt2img(prompt, { model: "ByteDance-Seed/Seedream-4.0", provider: "together-ai"})
         .then(img => {
           loading.remove();
           const div = document.createElement("div");
@@ -1118,6 +1152,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
