@@ -866,27 +866,6 @@ function exportAll(){
 function importAll(){
   document.getElementById("importFile").click();
 }
-
-function handleImport(e){
-  const file=e.target.files[0];
-  if(!file) return;
-  
-  const reader=new FileReader();
-  reader.onload=(ev)=>{
-    try{
-      const imported=JSON.parse(ev.target.result);
-      if(confirm("Import chats? This will merge with existing chats.")){
-        sessions={...sessions,...imported};
-        saveSessions();
-        alert("✅ Chats imported successfully!");
-      }
-    }catch(err){
-      alert("❌ Invalid file format!");
-    }
-  };
-  reader.readAsText(file);
-}
-
 /* ===== SCROLL TRACKING ===== */
 chat.addEventListener("scroll",()=>{
   const atBottom=chat.scrollHeight-chat.scrollTop-chat.clientHeight<50;
@@ -1136,6 +1115,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
