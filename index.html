@@ -1067,7 +1067,6 @@ async function send() {
   try {
     /* ================= IMAGE ================= */
     if (isImage) {
-      await puter.ready();
       puter.ai.txt2img(prompt, {
         model: "google/imagen-4.0-ultra", provider: "together-ai", disable_safety_checker: true })
         .then(img => {
@@ -1099,7 +1098,6 @@ async function send() {
 
     /* ================= VIDEO ================= */
     else if (isVideo) {
-      await puter.ready();
       const video = await puter.ai.txt2vid(prompt, {
         model: "ByteDance/Seedance-1.0-pro"
         // pro: ByteDance/Seedance-1.0-pro
@@ -1164,6 +1162,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
