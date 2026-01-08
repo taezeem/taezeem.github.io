@@ -1035,49 +1035,74 @@ async function send() {
   input.value = "";
   charCounter.textContent = "0 chars";
 
-  const isImage = prompt.startsWith("/img "); 
-  if (isImage) prompt = prompt.slice(5); 
+  const isImage = prompt.startsWith("/img ");
+  const isVideo = prompt.startsWith("/vid ");
+
+  if (isImage || isVideo) prompt = prompt.slice(5);
 
   render("user", prompt);
   const loading = render("bot", "<div class='spinner'></div>", false);
 
- try {
+  try {
+    /* ================= IMAGE ================= */
     if (isImage) {
-      // Image generation
-      puter.ai.txt2img(prompt, { model: "google/imagen-4.0-ultra", provider: "together-ai", disable_safety_checker: true })
-        .then(img => {
-          loading.remove();
-          const div = document.createElement("div");
-          div.className = "msg bot";
-          img.classList.add("ai-img");
+      puter.ai.txt2img(prompt, {
+        model: "google/imagen-4.0-ultra",
+        provider: "together-ai",
+        disable_safety_checker: true
+      }).then(img => {
+        loading.remove();
 
-// wait until image fully loads
-img.onload = () => {
-  const canvas = document.createElement("canvas");
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0);
-  const base64 = canvas.toDataURL();
-  saveMessage("bot", base64);
-};
+        const div = document.createElement("div");
+        div.className = "msg bot";
+        img.classList.add("ai-img");
 
-div.appendChild(img);
-          const t = document.createElement("div");
-          t.className = "timestamp";
-          t.textContent = time();
-          div.appendChild(t);
-          chat.appendChild(div);
-          chat.scrollTop = chat.scrollHeight;
-          
-        })
-        .catch(err => {
-          loading.remove();
-          console.error(err);
-          render("bot", "**Error generating image 💀**");
-        });
-    } else {
-      // Text via DeepSeek
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          canvas.getContext("2d").drawImage(img, 0, 0);
+          saveMessage("bot", canvas.toDataURL());
+        };
+
+        div.appendChild(img);
+        div.appendChild(timestampEl());
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+      }).catch(err => {
+        loading.remove();
+        console.error(err);
+        render("bot", "**Image gen failed 💀**");
+      });
+    }
+
+    /* ================= VIDEO ================= */
+    else if (isVideo) {
+      const video = await puter.ai.txt2vid(prompt, {
+        model: "ByteDance/Seedance-1.0-pro"
+        // pro: ByteDance/Seedance-1.0-pro
+      });
+
+      loading.remove();
+
+      video.controls = true;
+      video.autoplay = true;
+      video.loop = true;
+      video.style.maxWidth = "100%";
+      video.style.borderRadius = "12px";
+
+      const div = document.createElement("div");
+      div.className = "msg bot";
+      div.appendChild(video);
+      div.appendChild(timestampEl());
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+
+      saveMessage("bot", video.src);
+    }
+
+    /* ================= TEXT ================= */
+    else {
       const res = await fetch("/.netlify/functions/hackoAI", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1087,7 +1112,10 @@ div.appendChild(img);
       const data = await res.json();
       loading.remove();
 
-      const answer = data.choices?.[0]?.message?.content || "💀 Empty response from DeepSeek";
+      const answer =
+        data.choices?.[0]?.message?.content ||
+        "💀 Empty response from DeepSeek";
+
       await streamBotInChunks(answer);
     }
   } catch (err) {
@@ -1096,6 +1124,7 @@ div.appendChild(img);
     render("bot", "**Network error 💀**");
   }
 }
+
 
 function toggleTheme() {
   document.body.classList.toggle("dark");
@@ -1113,6 +1142,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
