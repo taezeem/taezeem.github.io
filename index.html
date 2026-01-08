@@ -1081,8 +1081,10 @@ async function send() {
         div.appendChild(img);
         chat.appendChild(div);
         chat.scrollTop = chat.scrollHeight;
-      }).catch(err => {
+        })
+        .catch(err => {
         loading.remove();
+          
         console.error(err);
         render("bot", "**Image gen failed 💀**");
       });
@@ -1155,6 +1157,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
