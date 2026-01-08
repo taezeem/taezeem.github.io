@@ -897,6 +897,13 @@ document.addEventListener("keydown",(e)=>{
 });
 
 /* ===== UTILS ===== */
+  function timestampEl() {
+  const t = document.createElement("div");
+  t.className = "timestamp";
+  t.textContent = time();
+  return t;
+}
+
 function time(){
   const d=new Date();
   return d.getHours().toString().padStart(2,'0')+":"+
@@ -1157,6 +1164,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
