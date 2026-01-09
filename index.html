@@ -928,34 +928,21 @@ function preprocess(text){
 }
 
 /* ===== RENDER ===== */
-function render(role, content, saveIt = true) {
-  const d = document.createElement("div");
-  d.className = "msg " + role;
-
-  // ✅ IMAGE (base64)
-  if (typeof content === "string" && content.startsWith("data:image")) {
-    const img = document.createElement("img");
-    img.src = content;
-    img.className = "ai-img";
-    d.appendChild(img);
-  }
-
-  // ✅ VIDEO
-  else if (typeof content === "object" && content.type === "video") {
-    const video = document.createElement("video");
-    video.src = content.src;
-    video.controls = true;
-    video.autoplay = true;
-    video.loop = true;
-    video.style.maxWidth = "100%";
-    video.style.borderRadius = "12px";
-    d.appendChild(video);
-  }
-
-  // ✅ TEXT
-  else {
-    d.innerHTML = marked.parse(preprocess(content));
-  }
+function render(role,content,saveIt=true){
+  const d=document.createElement("div");
+  d.className="msg "+role;
+  if (typeof content === "object" && content.type === "video") {
+  const video = document.createElement("video");
+  video.src = content.src;
+  video.controls = true;
+  video.autoplay = true;
+  video.loop = true;
+  video.style.maxWidth = "100%";
+  video.style.borderRadius = "12px";
+  d.appendChild(video);
+} else if (typeof content === "string") {
+  d.innerHTML = marked.parse(preprocess(content));
+}
   
   // Add message actions for user messages
   if(role==="user"){
@@ -1177,6 +1164,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
