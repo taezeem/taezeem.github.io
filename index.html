@@ -557,7 +557,7 @@ function handleImport(e) {
 
 function updateTitle(){
   const session=getCurrentSession();
-  if(session.messages.length===1&&session.title==="New Chat"){
+if (session.messages.filter(m => m.role === "user").length === 1&&session.title==="New Chat"){
     const firstMsg=session.messages[0].content;
     session.title=firstMsg.slice(0,30)+(firstMsg.length>30?"...":"");
     saveSessions();
@@ -1153,5 +1153,6 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
