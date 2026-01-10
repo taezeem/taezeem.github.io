@@ -905,6 +905,12 @@ function clearChat(){
 
 function toggleSidebar(){
   sidebar.classList.toggle("show");
+  // optional for desktop: hide completely
+  if (!sidebar.classList.contains("show") && window.innerWidth > 768) {
+    sidebar.style.display = "none";
+  } else {
+    sidebar.style.display = "";
+  }
 }
 /* ===== EXPORT/IMPORT ===== */
 function exportChat(){
@@ -1261,6 +1267,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
