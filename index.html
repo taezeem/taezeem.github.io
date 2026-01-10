@@ -329,9 +329,10 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 
 .msg ul, .msg ol {padding-left: 20px;margin: 8px 0;}
 .msg li {margin-bottom: 4px;}
-
-.hidden{display:none;}
-
+  
+  .sidebar.is-hidden {
+  transform: translateX(-100%);
+}
   .menu-close-btn {
   position: absolute;
   top: 11px;
@@ -908,7 +909,7 @@ function clearChat(){
 }
 
 function toggleSidebar(){
-  sidebar.classList.toggle("hidden");
+  sidebar.classList.toggle("is-hidden");
 }
 /* ===== EXPORT/IMPORT ===== */
 function exportChat(){
@@ -1265,6 +1266,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
