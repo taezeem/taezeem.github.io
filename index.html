@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -543,7 +544,7 @@ async function clearPuter() {
     }
   }
 
-  alert("Puter.js wiped 💀");
+  alert("Don't Get Greedy , Now Enjoy 💀");
   location.reload();
 }
   
@@ -1097,23 +1098,7 @@ function editMessage(oldContent){
 }
 
 /* ===== TYPEWRITER ===== */
-function streamBot(text){
-  const d=document.createElement("div");
-  d.className="msg bot";
-  chat.appendChild(d);
-
-  let i=0;
-  const interval=setInterval(()=>{
-    d.innerHTML = marked.parse(preprocess(text.slice(0,i++)));
-    chat.scrollTop=chat.scrollHeight;
-    if(i>text.length){
-      clearInterval(interval);
-      render("bot",text);
-      d.remove();
-    }
-  },15);
-}
-  // GLOBAL: typewriter bot streamer
+// GLOBAL: typewriter bot streamer
 async function streamBotInChunks(fullText, chunkSize = 50) {
   const d = document.createElement("div");
   d.className = "msg bot";
@@ -1216,7 +1201,7 @@ if (isImage) {
     /* ================= VIDEO ================= */
     else if (isVideo) {
       const video = await puter.ai.txt2vid(prompt, {
-        model: "sora-2-pro",
+        model: "sora-2",
         seconds: 8,
         size: "1280x720"
       });
@@ -1288,5 +1273,6 @@ renderHistory();
 updateHeaderTitle();
 
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"0fb7f381f5dd428589ff14babf88b44f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
