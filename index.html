@@ -518,8 +518,8 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <script>
 async function clearPuter() {
   // wipe storage
-  sessionStorage.clear();
-  sessionStorage.clear();
+  localStorage.clear();
+  localStorage.clear();
 
   // wipe cache storage
   if ("caches" in window) {
@@ -564,13 +564,13 @@ const SESSIONS_KEY = "hackoai_sessions";
 const CURRENT_KEY = "hackoai_current";
 
 let sessions = loadSessions();
-let currentId = sessionStorage.getItem(CURRENT_KEY) || null;
+let currentId = localStorage.getItem(CURRENT_KEY) || null;
 
 function loadSessions() {
   try {
-    return JSON.parse(sessionStorage.getItem(SESSIONS_KEY)) || {};
+    return JSON.parse(localStorage.getItem(SESSIONS_KEY)) || {};
   } catch {
-    sessionStorage.removeItem(SESSIONS_KEY);
+    localStorage.removeItem(SESSIONS_KEY);
     return {};
   }
 }
@@ -591,8 +591,8 @@ function saveSessions() {
     }
   }
 
-  sessionStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
-  sessionStorage.setItem(CURRENT_KEY, currentId);
+  localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+  localStorage.setItem(CURRENT_KEY, currentId);
   renderHistory();
   updateHeaderTitle();
 }
@@ -872,7 +872,7 @@ function newChat(){
 
 function loadChat(id){
   currentId=id;
-  sessionStorage.setItem(CURRENT_KEY,currentId);
+  localStorage.setItem(CURRENT_KEY,currentId);
   chat.innerHTML="";
   getCurrentSession().messages.forEach(m=>render(m.role,m.content,false));
   renderHistory();
@@ -1120,7 +1120,7 @@ async function streamBotInChunks(fullText, chunkSize = 50) {
 
     // live update
     session.messages[botIndex].content = renderedText;
-    sessionStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+    localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
 
     await new Promise(r => setTimeout(r, 15));
   }
@@ -1259,6 +1259,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
