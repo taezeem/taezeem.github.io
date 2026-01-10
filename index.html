@@ -911,6 +911,10 @@ function clearChat(){
 function toggleSidebar(){
   sidebar.classList.toggle("is-hidden");
 }
+  if (window.innerWidth <= 768) {
+  sidebar.classList.add("is-hidden");
+}
+
 /* ===== EXPORT/IMPORT ===== */
 function exportChat(){
   const session=getCurrentSession();
@@ -1266,6 +1270,7 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
 
