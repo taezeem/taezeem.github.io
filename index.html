@@ -379,6 +379,11 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
   margin-top: 8px;       /* spacing inside bubble */
   display: block;
 }
+  select {
+  font-size: 14px;
+  font-weight: 600;
+}
+
 
 </style>
 </head>
@@ -413,6 +418,11 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
         <button class="toggle" onclick="clearChat()">🗑️</button>
         <button class="toggle" onclick="toggleTheme()">🌗</button>
         <button class="toggle" onclick="clearPuter()">🔁 Credits</button>
+        <select id="imageModel">
+        <option value="google/imagen-4.0-ultra">Imagen 4 Ultra</option>
+        <option value="google/imagen-4.0-fast">Imagen 4 Fast</option>
+        <option value="gemini-3-pro-image-preview">Nano Banana (Gemini Image)</option>
+        </select>
       </div>
     </header>
 
@@ -1061,9 +1071,10 @@ async function send() {
   try {
 /* ================= IMAGE ================= */
 if (isImage) {
+  const model = document.getElementById("imageModel").value;
+
   puter.ai.txt2img(prompt, {
-    model: "google/imagen-4.0-ultra",
-    provider: "together-ai",
+    model,
     disable_safety_checker: true
   })
   .then(img => {
@@ -1074,9 +1085,7 @@ if (isImage) {
 
     img.classList.add("ai-img");
 
-    // Make sure image is fully loaded before saving
     img.onload = () => {
-      // Save the image as a base64 string for persistence
       const canvas = document.createElement("canvas");
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
@@ -1163,5 +1172,6 @@ updateHeaderTitle();
 </script>
 </body>
 </html>
+
 
 
