@@ -48,11 +48,6 @@ Zero dependencies. Zero backend. Zero pain.
 ```
 /
 ├── index.html
-├── style.css
-├── script.js
-├── assets/
-│   ├── icons
-│   └── favicons
 └── README.md
 ```
 
