@@ -123,16 +123,6 @@ MIT License — use it freely.
 
 ---
 
-## 🛣️ Roadmap (aka Future W's)
-
-* 🧠 AI provider swap support
-* 🧩 Custom system prompts
-* 🧬 Theme engine
-* 📜 Chat history export
-* 🔐 Optional auth layer
-
----
-
 ## 🧨 Philosophy
 
 > Fast. Simple. Local. No bloat.
