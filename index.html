@@ -946,8 +946,21 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
-
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+const sidebar=document.getElementById("sidebar");
+const historyList=document.getElementById("historyList");
+const searchBox=document.getElementById("searchBox");
+const scrollBottom=document.getElementById("scrollBottom");
+const charCounter=document.getElementById("charCounter");
+const headerTitle=document.getElementById("headerTitle");
+const PREPOPUP_KEY = "hackoai_prepopup_clicked";
+let lastUserPrompt = null;
+let isGenerating = false;
 let installPrompt;
+
+if (document.getElementById("installBtn")) return;
+btn.id = "installBtn";
 
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
@@ -961,7 +974,7 @@ window.addEventListener('beforeinstallprompt', e => {
     padding:10px 20px;border-radius:50px;
     font-weight:600;cursor:pointer;
     box-shadow:0 10px 30px rgba(37,99,235,0.5);
-    z-index:999;animation:pulse 2s infinite;
+    z-index:999;animation: bounce 2s infinite;
   `;
   
   btn.onclick = async () => {
@@ -981,7 +994,7 @@ style.textContent = `
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
   }
-`;
+  `;
 document.head.appendChild(style);
 
 // Share target handler
@@ -1104,6 +1117,7 @@ function speakText(text) {
   currentUtterance.volume = 0.9;
   
   const voices = window.speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => {};
   const enVoice = voices.find(v => v.lang.startsWith('en')) || voices[0];
   if (enVoice) currentUtterance.voice = enVoice;
 
@@ -1169,19 +1183,6 @@ async function clearPuter() {
   alert("Don't Get Greedy , Now Enjoy 💀");
   location.reload();
 }
-
-const chat=document.getElementById("chat");
-const input=document.getElementById("input");
-const sidebar=document.getElementById("sidebar");
-const historyList=document.getElementById("historyList");
-const searchBox=document.getElementById("searchBox");
-const scrollBottom=document.getElementById("scrollBottom");
-const charCounter=document.getElementById("charCounter");
-const headerTitle=document.getElementById("headerTitle");
-const PREPOPUP_KEY = "hackoai_prepopup_clicked";
-
-let lastUserPrompt = null;
-let isGenerating = false;
 
 function retryLast() {
   if (!lastUserPrompt) return;
