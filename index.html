@@ -572,38 +572,6 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
   text-overflow: ellipsis;
 }
 
-#imageBtn {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 16px;
-}
-
-#imageBtn:hover {
-  background: linear-gradient(135deg, #059669, #10b981);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16,185,129,0.4);
-}
-
-#imageBtn.recording {
-  background: #ef4444;
-  animation: pulse 1.5s infinite;
-}
-
-#imageBtn.disabled {
-  background: var(--border);
-  cursor: not-allowed;
-}
-
-#imageInput {
-  display: none; /* keep hidden, used only for file picker */
-}
-
 /* ===== MOBILE OPTIMIZED ===== */
 @media(max-width:768px){
   body {
@@ -736,39 +704,7 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
     font-size: 15px;
 	box-shadow: 0 10px 30px rgba(37,99,235,0.5);
   }
-
-#imageBtn {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 16px;
-}
-
-#imageBtn:hover {
-  background: linear-gradient(135deg, #059669, #10b981);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16,185,129,0.4);
-}
-
-#imageBtn.recording {
-  background: #ef4444;
-  animation: pulse 1.5s infinite;
-}
-
-#imageBtn.disabled {
-  background: var(--border);
-  cursor: not-allowed;
-}
-
-#imageInput {
-  display: none; /* keep hidden, used only for file picker */
-}
-
+  
   .char-counter {
     font-size: 9px;
     padding: 2px 4px;
@@ -795,9 +731,6 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
   }
 
   .voice-btn {
-    padding: 0 12px;
-    font-size: 14px;
-#imageInput {
     padding: 0 12px;
     font-size: 14px;
   }
@@ -977,18 +910,19 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
     <option value="openai/gpt-oss-20b:free">OpenAI GPT-OSS 20B (Free)</option>
     <option value="nousresearch/hermes-3-llama-3.1-405b:free">Nous Hermes 3 405B (Free)</option>
     <option value="arcee-ai/trinity-mini:free">Arcee AI Trinity Mini (Free)</option>
-    <option value="nvidia/nemotron-nano-12b-v2-vl:free">NVIDIA Nemotron Nano 12B VL (Free · Img Recog.)</option>
+    <option value="nvidia/nemotron-nano-12b-v2-vl:free">NVIDIA Nemotron Nano 12B VL (Free)</option>
     <option value="nvidia/nemotron-nano-9b-v2:free">NVIDIA Nemotron Nano 9B (Free)</option>
     <option value="allenai/molmo-2-8b:free">AllenAI Molmo-2 8B (Free)</option>
     <option value="qwen/qwen3-next-80b-a3b-instruct:free">Qwen3 Next 80B A3B (Free)</option>
     <option value="mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 24B (Free)</option>
     <option value="qwen/qwen3-4b:free">Qwen3 4B (Free)</option>
     <option value="meta-llama/llama-3.2-3b-instruct:free">Meta LLaMA 3.2 3B (Free)</option>
-    <option value="qwen/qwen-2.5-vl-7b-instruct:free">Qwen 2.5 VL 7B (Free · Img Recog.)</option>
+    <option value="qwen/qwen-2.5-vl-7b-instruct:free">Qwen 2.5 VL 7B (Free)</option>
     <option value="google/gemma-3-4b-it:free">Google Gemma 3 4B (Free)</option>
     <option value="google/gemma-3n-e2b-it:free">Google Gemma 3n 2B (Free)</option>
     <option value="google/gemma-3-12b-it:free">Google Gemma 3 12B (Free)</option>
     <option value="google/gemma-3n-e4b-it:free">Google Gemma 3n 4B (Free)</option>
+    <option value="moonshotai/kimi-k2:free">MoonshotAI Kimi K2 0711 (Free)</option>
     <option value="meta-llama/llama-3.1-405b-instruct:free">Meta LLaMA 3.1 405B Instruct (Free)</option>
   </select>
 </div>
@@ -1004,8 +938,6 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
         <input id="input" placeholder="Type or speak... (Ctrl+B for new chat)" />
         <div class="char-counter" id="charCounter">0 chars</div>
       </div>
-	<input type="file" id="imageInput" accept="image/*" style="display:none">
-<button id="imageBtn">🖼️</button>
       <button class="send" onclick="send()">Send</button>
     </footer>
   </div>
@@ -1014,17 +946,6 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
-let attachedImage = null;
-imageBtn.onclick = () => imageInput.click();
-
-imageInput.onchange = () => {
-  const file = imageInput.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => attachedImage = reader.result;
-  reader.readAsDataURL(file);
-};
 // ===== VOICE GLOBALS =====
 let recognition = null;
 let ttsEnabled = localStorage.getItem('hackoai_tts') === 'true';
@@ -1944,23 +1865,7 @@ async function send() {
         .filter(m => typeof m.content === "string")
         .map(m => ({ role: m.role === "bot" ? "assistant" : "user", content: m.content }));
 
-if (attachedImage) {
-  messages.push({
-    role: "user",
-    content: [
-      { type: "text", text: prompt },
-      {
-        type: "image_url",
-        image_url: { url: attachedImage }
-      }
-    ]
-  });
-} else {
-  messages.push({ role: "user", content: prompt });
-}
-
-attachedImage = null;
-imageInput.value = "";
+      messages.push({ role: "user", content: prompt });
 
       const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev", {
         method: "POST",
