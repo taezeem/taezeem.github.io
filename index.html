@@ -2004,11 +2004,6 @@ input.addEventListener("keydown", e => {
 getCurrentSession().messages.forEach(m=>render(m.role,m.content,false));
 renderHistory();
 updateHeaderTitle();
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
 </script>
-
 </body>
 </html>
