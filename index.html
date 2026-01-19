@@ -1035,6 +1035,7 @@ if ('launchQueue' in window) {
     }
   });
 }
+}
 // ===== VOICE GLOBALS =====
 let recognition = null;
 let ttsEnabled = localStorage.getItem('hackoai_tts') === 'true';
@@ -1856,8 +1857,6 @@ async function generateTitle(userPrompt, botReply) {
 }
 
 async function send() {
-  if (isGenerating) return;
-  isGenerating = true;
   if (isGenerating) {
     alert("Generation already in progress");
     return;
