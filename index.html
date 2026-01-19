@@ -572,6 +572,32 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
   text-overflow: ellipsis;
 }
 
+#imageInput {
+  position: relative;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: none;
+  background: #10b981;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#imageInput:hover {
+  background: #059669;
+}
+
+#imageInput.recording {
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+#imageInput.disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
+
 /* ===== MOBILE OPTIMIZED ===== */
 @media(max-width:768px){
   body {
@@ -705,12 +731,31 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 	box-shadow: 0 10px 30px rgba(37,99,235,0.5);
   }
 
-  #imageInput{
-  	padding: 0 16px;
-    font-size: 15px;
-	box-shadow: 0 10px 30px rgba(37,99,235,0.5);
-  }
-  
+#imageInput {
+  position: relative;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: none;
+  background: ;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#imageInput:hover {
+  background: #059669;
+}
+
+#imageInput.recording {
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+#imageInput.disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
   .char-counter {
     font-size: 9px;
     padding: 2px 4px;
@@ -737,6 +782,9 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
   }
 
   .voice-btn {
+    padding: 0 12px;
+    font-size: 14px;
+#imageInput {
     padding: 0 12px;
     font-size: 14px;
   }
