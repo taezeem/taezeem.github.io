@@ -946,6 +946,54 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  
+  // Show custom install button
+  const installBtn = document.createElement('button');
+  installBtn.textContent = '📲 Install HackoAI';
+  installBtn.className = 'install-prompt';
+  installBtn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(37,99,235,0.5);
+    z-index: 9999;
+    animation: bounce 2s infinite;
+  `;
+  
+  installBtn.onclick = async () => {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response: ${outcome}`);
+    deferredPrompt = null;
+    installBtn.remove();
+  };
+  
+  document.body.appendChild(installBtn);
+});
+
+// Add bounce animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+`;
+document.head.appendChild(style);
+	
 // Add this to your main JS
 if (window.location.search.includes('action=new')) {
   newChat();
@@ -1952,6 +2000,13 @@ getCurrentSession().messages.forEach(m=>render(m.role,m.content,false));
 renderHistory();
 updateHeaderTitle();
 
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(reg => console.log('✅ SW registered'))
+    .catch(err => console.log('❌ SW failed:', err));
+}
 </script>
+
 </body>
 </html>
