@@ -1010,7 +1010,7 @@ async function getAllChats() {
   });
 }
 
-async function deleteChat(id) {
+async function deleteChatFromDB(id) {
   if (!db) await openDB();
   const tx = db.transaction('chats', 'readwrite');
   const store = tx.objectStore('chats');
@@ -1492,7 +1492,7 @@ function loadChatMessages() {
 async function deleteChatHandler(id) {
   if (!confirm("Delete this chat? 💀")) return;
   
-  await deleteChat(id);
+  await deleteChatFromDB(id);
   delete sessions[id];
   
   if (id === currentId) {
