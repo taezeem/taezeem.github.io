@@ -1070,17 +1070,24 @@ let currentUtterance = null;
 async function initApp() {
   await openDB();
   await loadAllSessions();
-  
+
+  // 🔥 HARD SAFETY CHECK
   if (!currentId || !sessions[currentId]) {
-    await createNewChat();
+    currentId = Object.keys(sessions)[0] || null;
+    if (!currentId) {
+      await createNewChat();
+    } else {
+      localStorage.setItem(CURRENT_KEY, currentId);
+    }
   }
-  
+
   renderHistory();
   updateHeaderTitle();
   loadChatMessages();
   initVoice();
   initEventListeners();
 }
+
 
 async function loadAllSessions() {
   const allChats = await getAllChats();
@@ -1110,7 +1117,16 @@ async function createNewChat() {
 }
 
 function getCurrentSession() {
-  return sessions[currentId] || sessions[Object.keys(sessions)[0]];
+  if (sessions[currentId]) return sessions[currentId];
+
+  const first = Object.keys(sessions)[0];
+  if (first) {
+    currentId = first;
+    localStorage.setItem(CURRENT_KEY, first);
+    return sessions[first];
+  }
+
+  return null;
 }
 
 async function saveSessions() {
