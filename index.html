@@ -1691,7 +1691,7 @@ function render(role, content, saveIt = true) {
   } 
   else {
     // Update render function
-	d.innerHTML = DOMPurify.sanitize(marked.parse(preprocess(String(content))));
+	d.innerHTML = DOMPurify.sanitize(marked.parse(preprocess(renderedText)));
     renderMath(d);
   }
 
@@ -2120,6 +2120,18 @@ goToPuter.addEventListener("click", () => {
 
 // ===== INIT APP ON LOAD =====
 initApp()
+// Add after initApp() call
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration);
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed:', error);
+      });
+  });
+}
 </script>
 </body>
 </html>
