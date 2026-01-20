@@ -1481,12 +1481,24 @@ async function loadChatHandler(id) {
   scrollToBottom();
 }
 
-function loadChatMessages() {
+async function loadChatMessages() {
   chat.innerHTML = "";
   const session = getCurrentSession();
-  if (session && session.messages) {
-    session.messages.forEach(m => render(m.role, m.content, false));
+  if (!session) return;
+
+  for (const m of session.messages) {
+    if (typeof m.content === "object" && m.content.mediaId) {
+      const blob = await getMedia(m.content.mediaId);
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        render(m.role, { ...m.content, src: url }, false);
+      }
+    } else {
+      render(m.role, m.content, false);
+    }
   }
+
+  scrollToBottom();
 }
 
 async function deleteChatHandler(id) {
