@@ -2,7 +2,7 @@
   "name": "HackoAI • Voice Edition 🎤",
   "short_name": "HackoAI",
   "description": "Next-gen AI chat with voice input, TTS, multi-model support, image/video generation, and full offline capability. Built by Bro.",
-  "start_url": "/",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
