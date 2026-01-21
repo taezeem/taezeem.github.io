@@ -37,6 +37,7 @@ Basically: *Jarvis energy, budget edition*.
 * Vanilla JavaScript
 * Web Speech API
 * localStorage
+* Indexed-DB
 
 Zero dependencies. Zero pain.
 
