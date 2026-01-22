@@ -1056,6 +1056,33 @@ const CURRENT_KEY = "hackoai_current";
 const PREPOPUP_KEY = "hackoai_prepopup_clicked";
 const MODEL_KEY = "hackoai_text_model";
 
+function getUserId() {
+  let id = localStorage.getItem("hackoai_uid");
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("hackoai_uid", id);
+  }
+  return id;
+}
+
+function getUsername() {
+  let name = localStorage.getItem("hackoai_username");
+  if (!name) {
+    name = prompt("Pick a username (global leaderboard 👀)").slice(0, 16);
+    name = name.replace(/[^a-zA-Z0-9_]/g, "");
+    localStorage.setItem("hackoai_username", name || "Bro");
+  }
+  return name;
+}
+
+function addXP(amount) {
+  let xp = Number(localStorage.getItem("hackoai_xp") || 0);
+  xp += amount;
+  localStorage.setItem("hackoai_xp", xp);
+  syncXP(xp);
+}
+
+
 let sessions = {};
 let currentId = localStorage.getItem(CURRENT_KEY) || null;
 let lastUserPrompt = null;
@@ -1854,6 +1881,48 @@ async function streamBotInChunks(fullText, chunkSize = 50) {
 
   await saveSessions();
 }
+// ======= LEADERBOARD =======
+async function syncXP(xp) {
+async function fetchLeaderboard() {
+  try {
+    const res = await fetch(
+      "https://hackoai-worker.tariqmtaezeem.workers.dev/leaderboard/top"
+    );
+    return await res.json();
+  } catch (e) {
+    console.warn("Leaderboard fetch failed", e);
+    return [];
+  }
+}
+
+  try {
+    await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/leaderboard/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: getUserId(),
+        username: getUsername(),
+        xp
+      })
+    });
+  } catch (e) {
+    console.warn("Leaderboard sync failed", e);
+  }
+}
+
+async function showLeaderboard() {
+  const data = await fetchLeaderboard();
+  if (!data.length) return alert("No leaderboard data yet 💀");
+
+  let html = "🏆 GLOBAL LEADERBOARD 🏆\n\n";
+
+  data.forEach((u, i) => {
+    html += `${i + 1}. ${u.username} — ${u.xp} XP\n`;
+  });
+
+  alert(html);
+}
+
 
 // ===== AUTO TITLE =====
 async function generateTitle(userPrompt, botReply) {
@@ -2007,6 +2076,7 @@ async function send() {
       loading.remove();
       await streamBotInChunks(answer);
       isGenerating = false;
+	  addXP(10);
 
       if (shouldAutoTitle) {
         try {
@@ -2064,6 +2134,10 @@ function initEventListeners() {
     if (e.ctrlKey && e.key === "k") {
       e.preventDefault();
       searchBox.focus();
+    }
+	if (e.ctrlKey && e.key === "l") {
+  e.preventDefault();
+  showLeaderboard();
     }
   });
 }
