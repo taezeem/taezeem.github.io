@@ -22,6 +22,22 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&display=swap');
+/* Master overflow control */
+.msg,
+.msg *,
+.katex,
+.katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-sizing: border-box;
+}
+
+.msg {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
 *{
 	box-sizing:border-box;
 	margin:0;
