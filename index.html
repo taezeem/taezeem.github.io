@@ -893,37 +893,51 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
         </div>
         <div class="select-wrap">
   <select id="textModel">
-	<option value="deepseek/deepseek-r1-0528:free">DeepSeek R1 0528 (Free · Beast)</option>
-    <option value="xiaomi/mimo-v2-flash:free">Xiaomi MiMo-V2-Flash (Free)</option>
-    <option value="mistralai/devstral-2512:free">Mistral Devstral 2 2512 (Free · Code)</option>
-    <option value="tngtech/deepseek-r1t2-chimera:free">TNG DeepSeek R1T2 Chimera (Free)</option>
-    <option value="tngtech/deepseek-r1t-chimera:free">TNG DeepSeek R1T Chimera (Free)</option>
-    <option value="z-ai/glm-4.5-air:free">Z.AI GLM 4.5 Air (Free)</option>
-    <option value="tngtech/tng-r1t-chimera:free">TNG R1T Chimera (Creative · Free)</option>
-    <option value="qwen/qwen3-coder:free">Qwen3 Coder 480B A35B (Free)</option>
-    <option value="meta-llama/llama-3.3-70b-instruct:free">Meta LLaMA 3.3 70B Instruct (Free)</option>
-    <option value="google/gemma-3-27b-it:free">Google Gemma 3 27B (Free)</option>
-    <option value="nvidia/nemotron-3-nano-30b-a3b:free">NVIDIA Nemotron 3 Nano 30B (Free)</option>
-    <option value="openai/gpt-oss-120b:free">OpenAI GPT-OSS 120B (Free)</option>
-    <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash Experimental (Free)</option>
-    <option value="cognitivecomputations/dolphin-mistral-24b-venice-edition:free">Venice Dolphin Mistral 24B (Uncensored · Free)</option>
-    <option value="openai/gpt-oss-20b:free">OpenAI GPT-OSS 20B (Free)</option>
-    <option value="nousresearch/hermes-3-llama-3.1-405b:free">Nous Hermes 3 405B (Free)</option>
-    <option value="arcee-ai/trinity-mini:free">Arcee AI Trinity Mini (Free)</option>
-    <option value="nvidia/nemotron-nano-12b-v2-vl:free">NVIDIA Nemotron Nano 12B VL (Free)</option>
-    <option value="nvidia/nemotron-nano-9b-v2:free">NVIDIA Nemotron Nano 9B (Free)</option>
-    <option value="allenai/molmo-2-8b:free">AllenAI Molmo-2 8B (Free)</option>
-    <option value="qwen/qwen3-next-80b-a3b-instruct:free">Qwen3 Next 80B A3B (Free)</option>
-    <option value="mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 24B (Free)</option>
-    <option value="qwen/qwen3-4b:free">Qwen3 4B (Free)</option>
-    <option value="meta-llama/llama-3.2-3b-instruct:free">Meta LLaMA 3.2 3B (Free)</option>
-    <option value="qwen/qwen-2.5-vl-7b-instruct:free">Qwen 2.5 VL 7B (Free)</option>
-    <option value="google/gemma-3-4b-it:free">Google Gemma 3 4B (Free)</option>
-    <option value="google/gemma-3n-e2b-it:free">Google Gemma 3n 2B (Free)</option>
-    <option value="google/gemma-3-12b-it:free">Google Gemma 3 12B (Free)</option>
-    <option value="google/gemma-3n-e4b-it:free">Google Gemma 3n 4B (Free)</option>
-    <option value="moonshotai/kimi-k2:free">MoonshotAI Kimi K2 0711 (Free)</option>
-    <option value="meta-llama/llama-3.1-405b-instruct:free">Meta LLaMA 3.1 405B Instruct (Free)</option>
+    <!-- Keep R1 at top, uncensored -->
+    <option value="deepseek/deepseek-r1-0528:free">DeepSeek R1 0528 (Beast · Creative · No Guardrails)</option>
+
+    <!-- Big Context / Coding -->
+    <option value="qwen/qwen3-coder:free">Qwen3 Coder 480B A35B (Code)</option>
+    <option value="qwen/qwen3-next-80b-a3b-instruct:free">Qwen3 Next 80B A3B Instruct (Code)</option>
+    <option value="mistralai/devstral-2512:free">Mistral Devstral 2 2512 (Creative)</option>
+    <option value="tngtech/deepseek-r1t2-chimera:free">TNG DeepSeek R1T2 Chimera (Creative)</option>
+    <option value="tngtech/deepseek-r1t-chimera:free">TNG DeepSeek R1T Chimera (Creative)</option>
+    <option value="tngtech/tng-r1t-chimera:free">TNG R1T Chimera (Creative)</option>
+    <option value="nvidia/nemotron-3-nano-30b-a3b:free">NVIDIA Nemotron 3 Nano 30B (Creative)</option>
+
+    <!-- Multi-purpose / Chat -->
+    <option value="meta-llama/llama-3.3-70b-instruct:free">Meta LLaMA 3.3 70B Instruct (Creative)</option>
+    <option value="google/gemma-3-27b-it:free">Google Gemma 3 27B (Creative)</option>
+    <option value="z-ai/glm-4.5-air:free">Z.AI GLM 4.5 Air (Creative)</option>
+    <option value="arcee-ai/trinity-mini:free">Arcee AI Trinity Mini (Fast)</option>
+    <option value="nousresearch/hermes-3-llama-3.1-405b:free">Nous Hermes 3 405B Instruct (Creative)</option>
+    <option value="openai/gpt-oss-120b:free">OpenAI GPT-OSS 120B (Creative)</option>
+    <option value="openai/gpt-oss-20b:free">OpenAI GPT-OSS 20B (Creative)</option>
+    <option value="google/gemini-2.0-flash-exp:free">Google Gemini 2.0 Flash Experimental (Creative · Fast)</option>
+
+    <!-- Smaller / Fast Models -->
+    <option value="nvidia/nemotron-nano-12b-v2-vl:free">NVIDIA Nemotron Nano 12B VL (Fast)</option>
+    <option value="mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 24B (Fast)</option>
+    <option value="nvidia/nemotron-nano-9b-v2:free">NVIDIA Nemotron Nano 9B V2 (Fast)</option>
+    <option value="allenai/molmo-2-8b:free">AllenAI Molmo-2 8B (Fast)</option>
+    <option value="qwen/qwen3-4b:free">Qwen3 4B (Fast)</option>
+    <option value="google/gemma-3-12b-it:free">Google Gemma 3 12B (Fast)</option>
+    <option value="google/gemma-3-4b-it:free">Google Gemma 3 4B (Fast)</option>
+    <option value="moonshotai/kimi-k2:free">MoonshotAI Kimi K2 0711 (Fast)</option>
+
+    <!-- Uncensored / No Guardrails -->
+    <option value="cognitivecomputations/dolphin-mistral-24b-venice-edition:free">Venice Dolphin Mistral 24B (Uncensored · No Guardrails)</option>
+
+    <option value="qwen/qwen-2.5-vl-7b-instruct:free">Qwen 2.5 VL 7B Instruct (Fast)</option>
+    <option value="liquid/lfm-2.5-1.2b-instruct:free">LiquidAI LFM2.5-1.2B-Instruct (Fast)</option>
+    <option value="liquid/lfm-2.5-1.2b-thinking:free">LiquidAI LFM2.5-1.2B-Thinking (Fast)</option>
+    <option value="google/gemma-3n-e4b-it:free">Google Gemma 3n 4B (Fast)</option>
+    <option value="google/gemma-3n-e2b-it:free">Google Gemma 3n 2B (Fast)</option>
+
+    <!-- Deprecated / soon-to-be-gone -->
+    <option value="xiaomi/mimo-v2-flash:free">Xiaomi MiMo-V2-Flash (Free · Deprecated)</option>
+    <option value="tngtech/r1t-chimera:free">TNG R1T Chimera (Free · Deprecated)</option>
+    <option value="mistralai/devstral-2512:free">Mistral Devstral 2 2512 (Free · Deprecated)</option>
   </select>
 </div>
       </div>
