@@ -1821,7 +1821,7 @@ function render(role, content, saveIt = true) {
 }
 
 // ===== STREAMING =====
-async function streamBotInChunks(fullText, chunkSize = 50) {
+async function streamBotInChunks(fullText, baseChunkSize = 50) {
   const d = document.createElement("div");
   d.className = "msg bot";
   chat.appendChild(d);
@@ -1831,24 +1831,36 @@ async function streamBotInChunks(fullText, chunkSize = 50) {
   await saveMessage("bot", "");
   const botIndex = session.messages.length - 1;
 
+  const totalLength = fullText.length;
+  let chunkSize = baseChunkSize;
+  
+  // 🔥 Adaptive chunking - bigger chunks for long responses
+  if (totalLength > 5000) chunkSize = 100;
+  if (totalLength > 10000) chunkSize = 200;
+
   for (let i = 0; i < fullText.length; i += chunkSize) {
     const chunk = fullText.slice(i, i + chunkSize);
     renderedText += chunk;
-	if (window.marked) {
-    d.innerHTML = marked.parse(preprocess(renderedText));
-	} else {
-	d.textContent = renderedText;
-	}
+    
+    if (window.marked) {
+      d.innerHTML = marked.parse(preprocess(renderedText));
+    } else {
+      d.textContent = renderedText;
+    }
     renderMath(d);
     chat.scrollTop = chat.scrollHeight;
 
     session.messages[botIndex].content = renderedText;
-    await saveChat(session);
+    
+    // Save less frequently for long responses
+    if (i % (chunkSize * 5) === 0 || i + chunkSize >= fullText.length) {
+      await saveChat(session);
+    }
 
-    await new Promise(r => setTimeout(r, 15));
+    await new Promise(r => setTimeout(r, totalLength > 5000 ? 5 : 15));
   }
 
-  speakText(renderedText);
+  speakText(renderedText)
   
   if (window.hljs) {
     setTimeout(() => {
