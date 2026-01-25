@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+# HackoAI – private app, not for indexing
