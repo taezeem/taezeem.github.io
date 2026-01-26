@@ -1951,7 +1951,7 @@ async function send() {
     if (isImage) {
   const model = document.getElementById("imageModel").value;
 
-  const res = await fetch("/hf/img", {
+  const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ prompt, model })
@@ -1984,7 +1984,7 @@ async function send() {
   chat.scrollTop = chat.scrollHeight;
 }
 else if (isVideo) {
-  const res = await fetch("/hf/vid", {
+  const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ prompt })
