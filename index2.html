@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HackoAI • Voice Edition 🎤</title>
+<title>HackoAI • HF Edition 🎤</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -903,53 +903,51 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
         </div>
         <div class="select-wrap">
   <select id="textModel">
-    <!-- Keep R1 at top, uncensored -->
-    <option value="deepseek/deepseek-r1-0528:free">DeepSeek R1 0528 (Beast · Creative · No Guardrails)</option>
+  <!-- Uncensored / R1 -->
+  <option value="deepseek-ai/DeepSeek-R1">
+    DeepSeek R1 (Beast · Creative · Minimal Guardrails)
+  </option>
 
-    <!-- Big Context / Coding -->
-    <option value="qwen/qwen3-coder:free">Qwen3 Coder 480B A35B (Code)</option>
-    <option value="qwen/qwen3-next-80b-a3b-instruct:free">Qwen3 Next 80B A3B Instruct (Code)</option>
-    <option value="mistralai/devstral-2512:free">Mistral Devstral 2 2512 (Creative)</option>
-    <option value="tngtech/deepseek-r1t2-chimera:free">TNG DeepSeek R1T2 Chimera (Creative)</option>
-    <option value="tngtech/deepseek-r1t-chimera:free">TNG DeepSeek R1T Chimera (Creative)</option>
-    <option value="tngtech/tng-r1t-chimera:free">TNG R1T Chimera (Creative)</option>
-    <option value="nvidia/nemotron-3-nano-30b-a3b:free">NVIDIA Nemotron 3 Nano 30B (Creative)</option>
+  <!-- Coding / Big Brain -->
+  <option value="Qwen/Qwen2.5-Coder-32B-Instruct">
+    Qwen Coder 32B (Code)
+  </option>
+  <option value="Qwen/Qwen2.5-72B-Instruct">
+    Qwen 72B Instruct (Code / Chat)
+  </option>
+  <option value="mistralai/Mistral-7B-Instruct-v0.3">
+    Mistral 7B Instruct (Creative)
+  </option>
 
-    <!-- Multi-purpose / Chat -->
-    <option value="meta-llama/llama-3.3-70b-instruct:free">Meta LLaMA 3.3 70B Instruct (Creative)</option>
-    <option value="google/gemma-3-27b-it:free">Google Gemma 3 27B (Creative)</option>
-    <option value="z-ai/glm-4.5-air:free">Z.AI GLM 4.5 Air (Creative)</option>
-    <option value="arcee-ai/trinity-mini:free">Arcee AI Trinity Mini (Fast)</option>
-    <option value="nousresearch/hermes-3-llama-3.1-405b:free">Nous Hermes 3 405B Instruct (Creative)</option>
-    <option value="openai/gpt-oss-120b:free">OpenAI GPT-OSS 120B (Creative)</option>
-    <option value="openai/gpt-oss-20b:free">OpenAI GPT-OSS 20B (Creative)</option>
-    <option value="google/gemini-2.0-flash-exp:free">Google Gemini 2.0 Flash Experimental (Creative · Fast)</option>
+  <!-- Chimera / R1 Variants (closest HF equivalents) -->
+  <option value="NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO">
+    Nous Hermes Mixtral (Creative)
+  </option>
 
-    <!-- Smaller / Fast Models -->
-    <option value="nvidia/nemotron-nano-12b-v2-vl:free">NVIDIA Nemotron Nano 12B VL (Fast)</option>
-    <option value="mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 24B (Fast)</option>
-    <option value="nvidia/nemotron-nano-9b-v2:free">NVIDIA Nemotron Nano 9B V2 (Fast)</option>
-    <option value="allenai/molmo-2-8b:free">AllenAI Molmo-2 8B (Fast)</option>
-    <option value="qwen/qwen3-4b:free">Qwen3 4B (Fast)</option>
-    <option value="google/gemma-3-12b-it:free">Google Gemma 3 12B (Fast)</option>
-    <option value="google/gemma-3-4b-it:free">Google Gemma 3 4B (Fast)</option>
-    <option value="moonshotai/kimi-k2:free">MoonshotAI Kimi K2 0711 (Fast)</option>
+  <!-- General Chat -->
+  <option value="meta-llama/Llama-3.1-8B-Instruct">
+    LLaMA 3.1 8B Instruct
+  </option>
+  <option value="meta-llama/Meta-Llama-3-70B-Instruct">
+    LLaMA 3 70B Instruct (Heavy)
+  </option>
+  <option value="google/gemma-2-27b-it">
+    Gemma 2 27B
+  </option>
 
-    <!-- Uncensored / No Guardrails -->
-    <option value="cognitivecomputations/dolphin-mistral-24b-venice-edition:free">Venice Dolphin Mistral 24B (Uncensored · No Guardrails)</option>
+  <!-- Fast / Light -->
+  <option value="google/gemma-2-9b-it">
+    Gemma 2 9B (Fast)
+  </option>
+  <option value="Qwen/Qwen2.5-7B-Instruct">
+    Qwen 7B (Fast)
+  </option>
 
-    <option value="qwen/qwen-2.5-vl-7b-instruct:free">Qwen 2.5 VL 7B Instruct (Fast)</option>
-    <option value="liquid/lfm-2.5-1.2b-instruct:free">LiquidAI LFM2.5-1.2B-Instruct (Fast)</option>
-    <option value="liquid/lfm-2.5-1.2b-thinking:free">LiquidAI LFM2.5-1.2B-Thinking (Fast)</option>
-    <option value="google/gemma-3n-e4b-it:free">Google Gemma 3n 4B (Fast)</option>
-    <option value="google/gemma-3n-e2b-it:free">Google Gemma 3n 2B (Fast)</option>
-
-    <!-- Deprecated / soon-to-be-gone -->
-    <option value="xiaomi/mimo-v2-flash:free">Xiaomi MiMo-V2-Flash (Free · Deprecated)</option>
-    <option value="tngtech/r1t-chimera:free">TNG R1T Chimera (Free · Deprecated)</option>
-    <option value="mistralai/devstral-2512:free">Mistral Devstral 2 2512 (Free · Deprecated)</option>
-  </select>
-</div>
+  <!-- UNCENSORED GOAT -->
+  <option value="cognitivecomputations/dolphin-mistral-24b-venice-edition">
+    Dolphin Mistral 24B (UNCENSORED 🧨)
+  </option>
+</select>
       </div>
     </header>
 
@@ -1906,11 +1904,11 @@ async function streamBotInChunks(fullText, baseChunkSize = 50) {
 // ===== AUTO TITLE =====
 async function generateTitle(userPrompt, botReply) {
   try {
-    const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/chat", {
+    const res = await fetch("https://hackoai-2.tariqmtaezeem.workers.dev/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "deepseek/deepseek-r1-0528:free",
+        model: model,
         messages: [
           {
             role: "system",
@@ -1978,7 +1976,7 @@ async function send() {
     if (isImage) {
   const model = document.getElementById("imageModel").value;
 
-  const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/hf/img", {
+  const res = await fetch("https://hackoai-2.tariqmtaezeem.workers.dev/hf/img", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ prompt, model })
@@ -2011,7 +2009,7 @@ async function send() {
   chat.scrollTop = chat.scrollHeight;
 }
 else if (isVideo) {
-  const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/hf/vid", {
+  const res = await fetch("https://hackoai-2.tariqmtaezeem.workers.dev/hf/vid", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ prompt })
@@ -2055,7 +2053,7 @@ else if (isVideo) {
 
       messages.push({ role: "user", content: prompt });
 
-      const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/chat", {
+      const res = await fetch("https://hackoai-2.tariqmtaezeem.workers.dev/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ model: model, messages: messages })
