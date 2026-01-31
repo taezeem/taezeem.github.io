@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HackoAI • Voice Edition 🎤</title>
+<title>Spectrix Ai</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -858,7 +858,7 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
     <header>
       <div style="display:flex;align-items:center;gap:10px">
         <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-        <span id="headerTitle" ondblclick="editTitle()">HackoAI</span>
+        <span id="headerTitle" ondblclick="editTitle()">Spectrix Ai</span>
       </div>
       <div class="controls">
         <button class="toggle" onclick="exportChat()">💾</button>
@@ -970,7 +970,7 @@ body.dark #chat::-webkit-scrollbar-thumb {background-color: #2563eb;border: 2px 
 
 <script>
 // ===== INDEXEDDB SETUP =====
-const DB_NAME = 'HackoAI_DB';
+const DB_NAME = 'Spectrix_DB';
 const DB_VERSION = 1;
 let db = null;
 
@@ -1075,8 +1075,8 @@ const searchBox = document.getElementById("searchBox");
 const scrollBottom = document.getElementById("scrollBottom");
 const charCounter = document.getElementById("charCounter");
 const headerTitle = document.getElementById("headerTitle");
-const CURRENT_KEY = "hackoai_current";
-const MODEL_KEY = "hackoai_text_model";
+const CURRENT_KEY = "Spectrix_current";
+const MODEL_KEY = "Spectrix_text_model";
 
 let sessions = {};
 let currentId = localStorage.getItem(CURRENT_KEY) || null;
@@ -1086,7 +1086,7 @@ let installPrompt;
 
 // ===== VOICE GLOBALS =====
 let recognition = null;
-let ttsEnabled = localStorage.getItem('hackoai_tts') === 'true';
+let ttsEnabled = localStorage.getItem('Spectrix_tts') === 'true';
 let currentUtterance = null;
 
 // ===== INIT =====
@@ -1235,7 +1235,7 @@ function toggleVoiceInput() {
 
 function toggleTTS() {
   ttsEnabled = !ttsEnabled;
-  localStorage.setItem('hackoai_tts', ttsEnabled);
+  localStorage.setItem('Spectrix_tts', ttsEnabled);
   const btn = document.getElementById('ttsToggle');
   btn.classList.toggle('active', ttsEnabled);
   btn.textContent = ttsEnabled ? '🔊' : '🔇';
@@ -1627,7 +1627,7 @@ async function exportAll() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `hackoai_backup_${Date.now()}.json`;
+  a.download = `Spectrix_backup_${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -2218,7 +2218,7 @@ if (goToPuter && prePopup) {
 	if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
-      .then(() => console.log('🔥 HackoAI SW registered'))
+      .then(() => console.log('🔥 Spectrix SW registered'))
       .catch(err => console.error('SW failed:', err));
   });
 }
