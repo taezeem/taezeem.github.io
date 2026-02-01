@@ -1,5 +1,5 @@
-// HackoAI Service Worker - Offline Support
-const CACHE_NAME = 'hackoai-v1';
+// spectrix Service Worker - Offline Support
+const CACHE_NAME = 'spectrix-v1';
 const ASSETS = [
   '/',
   '/index.html',
@@ -18,7 +18,7 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('🔥 HackoAI: Caching app shell');
+      console.log('🔥 Spectrix: Caching app shell');
       return cache.addAll(ASSETS.map(url => new Request(url, {mode: 'no-cors'})))
         .catch(err => console.warn('Cache failed for some assets:', err));
     })
@@ -45,7 +45,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   
   // Skip API calls to your worker
-  if (e.request.url.includes('hackoai-worker') || 
+  if (e.request.url.includes('spectrix-worker') || 
       e.request.url.includes('puter.com')) {
     return; // Let API calls go through without caching
   }
@@ -68,7 +68,7 @@ self.addEventListener('fetch', (e) => {
           // If HTML request fails and not cached, return offline page
           if (e.request.headers.get('accept').includes('text/html')) {
             return new Response(
-              '<h1>🔌 Offline Mode</h1><p>HackoAI needs internet for AI responses, but your chat history is saved locally!</p>',
+              '<h1>🔌 Offline Mode</h1><p>spectrix needs internet for AI responses, but your chat history is saved locally!</p>',
               { headers: { 'Content-Type': 'text/html' } }
             );
           }
