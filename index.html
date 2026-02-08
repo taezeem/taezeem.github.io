@@ -1880,22 +1880,35 @@ async function streamBotInChunks(fullText, baseChunkSize = 50) {
   await saveSessions();
 }
 
-// ===== AUTO TITLE =====
+// ===== FULL AUTO TITLE =====
 async function generateTitle(userPrompt, botReply) {
   try {
     const res = await fetch("https://hackoai-worker.tariqmtaezeem.workers.dev/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "deepseek/deepseek-r1-0528:free",
+        model: "z-ai/glm-4.5-air:free",
         messages: [
           {
             role: "system",
-            content: "Create a short chat title (3–5 words). No quotes. No `Here is a chat title` , just plain 2-3 words"
+            content: `
+You are a smart assistant that generates short chat titles.
+- Titles must be 3–5 words.
+- Do NOT include quotes, backticks, or phrases like "Here is a chat title".
+- Keep it plain, punchy, and readable.
+- Summarize the essence of the conversation, not just copy words.
+- Avoid special characters or excessive punctuation.
+- Do not exceed 40 characters.
+`
           },
           {
             role: "user",
-            content: `User: ${userPrompt}\nAssistant: ${botReply}`
+            content: `
+User said: ${userPrompt}
+Assistant replied: ${botReply}
+
+Create a concise title that captures the main topic of this conversation.
+`
           }
         ]
       })
@@ -1904,13 +1917,35 @@ async function generateTitle(userPrompt, botReply) {
     if (!res.ok) throw new Error("Title API error: " + res.status);
 
     const data = await res.json();
-    const rawTitle = data.choices?.[0]?.message?.content || "New Chat";
-    const cleanTitle = rawTitle.replace(/["'\n]/g, "").trim().slice(0, 40);
+    const rawTitle = data?.choices?.[0]?.message?.content || "";
+
+    // ==== CLEAN & FORMAT ====
+    let cleanTitle = rawTitle
+      .replace(/["'`\n]/g, "")     // remove quotes, backticks, line breaks
+      .replace(/\s+/g, " ")        // collapse multiple spaces
+      .trim()
+      .split(" ")                  // limit words
+      .slice(0, 5)
+      .join(" ");
+
+    // Fallback: if title is empty, use first 5 words of user prompt
+    if (!cleanTitle) {
+      cleanTitle = userPrompt
+        .replace(/\s+/g, " ")
+        .trim()
+        .split(" ")
+        .slice(0, 5)
+        .join(" ");
+    }
 
     return cleanTitle || "New Chat";
   } catch (err) {
     console.error("Title generation failed:", err);
-    return "New Chat";
+
+    // Final fallback
+    return userPrompt
+      ? userPrompt.replace(/\s+/g, " ").trim().split(" ").slice(0, 5).join(" ")
+      : "New Chat";
   }
 }
 
